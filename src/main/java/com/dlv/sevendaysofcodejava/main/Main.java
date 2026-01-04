@@ -3,10 +3,12 @@ package com.dlv.sevendaysofcodejava.main;
 import com.dlv.sevendaysofcodejava.model.Movie;
 import com.dlv.sevendaysofcodejava.service.ConsumoAPI;
 import com.dlv.sevendaysofcodejava.service.ConverteDados;
+import com.dlv.sevendaysofcodejava.service.HTMLGenerator;
 import io.github.cdimascio.dotenv.Dotenv;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -53,14 +55,11 @@ public class Main {
             return movie;
         }).toList();
 
-        movies.forEach(System.out::println);
-
-        /*ids.forEach(id -> {
-            String url = this.endereco + "?i=" + id + "&apikey=" + this.apiKey;
-            // System.out.println("Buscando dados para ID: " + id + " na URL: " + url);
-
-            String json = consumo.obterDados(url);
-
-        });*/
+        try (PrintWriter writer = new PrintWriter("movies.html")) {
+            HTMLGenerator generator = new HTMLGenerator(writer);
+            generator.generate(movies);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
