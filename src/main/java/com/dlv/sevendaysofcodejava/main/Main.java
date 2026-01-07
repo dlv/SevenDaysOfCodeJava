@@ -16,6 +16,7 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
+import java.util.Collections;
 
 public class Main {
 
@@ -54,7 +55,10 @@ public class Main {
         String json = "[" + String.join(",", jsonMovies) + "]";
 
         JsonParser parser = new ImdbMovieJsonParser(json);
-        List<? extends Content> contentList = parser.parse();
+        List<Movie> contentList = (List<Movie>) parser.parse();
+
+        // Ordena a lista usando a ordem natural definida na classe Movie (rating ascendente)
+        Collections.sort(contentList);
 
         try (PrintWriter writer = new PrintWriter("movies.html")) {
             HTMLGenerator generator = new HTMLGenerator(writer);
