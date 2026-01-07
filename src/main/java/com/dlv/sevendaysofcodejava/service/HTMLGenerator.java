@@ -1,6 +1,6 @@
 package com.dlv.sevendaysofcodejava.service;
 
-import com.dlv.sevendaysofcodejava.model.Movie;
+import com.dlv.sevendaysofcodejava.model.Content;
 
 import java.io.PrintWriter;
 import java.util.List;
@@ -13,7 +13,7 @@ public class HTMLGenerator {
         this.writer = writer;
     }
 
-    public void generate(List<Movie> movies) {
+    public void generate(List<? extends Content> contents) {
         writer.println(
                 """
                 <!DOCTYPE html>
@@ -31,8 +31,8 @@ public class HTMLGenerator {
                 """
         );
 
-        movies.forEach(movie -> {
-            String movieTemplate =
+        contents.forEach(content -> {
+            String contentTemplate =
                     """
                     <div class="col-md-4 mb-4">
                         <div class="card text-white bg-dark">
@@ -44,7 +44,7 @@ public class HTMLGenerator {
                         </div>
                     </div>
                     """;
-            writer.println(String.format(movieTemplate, movie.titulo(), movie.urlImage(), movie.titulo(), movie.note(), movie.ano()));
+            writer.println(String.format(contentTemplate, content.title(), content.urlImage(), content.title(), content.rating(), content.year()));
         });
 
         writer.println(

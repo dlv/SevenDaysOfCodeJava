@@ -1,10 +1,14 @@
 package com.dlv.sevendaysofcodejava.main;
 
+import com.dlv.sevendaysofcodejava.model.Content;
 import com.dlv.sevendaysofcodejava.model.Movie;
 import com.dlv.sevendaysofcodejava.service.HTMLGenerator;
 import com.dlv.sevendaysofcodejava.service.ImdbApiClient;
 import com.dlv.sevendaysofcodejava.service.ImdbMovieJsonParser;
+import com.dlv.sevendaysofcodejava.service.JsonParser;
 import io.github.cdimascio.dotenv.Dotenv;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,6 +19,7 @@ import java.util.stream.Collectors;
 
 public class Main {
 
+    Logger logger = LoggerFactory.getLogger(Main.class);
     private final String apiKey;
     private String endereco;
 
@@ -48,13 +53,15 @@ public class Main {
 
         String json = "[" + String.join(",", jsonMovies) + "]";
 
-        List<Movie> movies = new ImdbMovieJsonParser(json).parse();
+        JsonParser parser = new ImdbMovieJsonParser(json);
+        List<? extends Content> contentList = parser.parse();
 
         try (PrintWriter writer = new PrintWriter("movies.html")) {
             HTMLGenerator generator = new HTMLGenerator(writer);
-            generator.generate(movies);
+            generator.generate(contentList);
+            logger.info("HTML Gerado com secesso");
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Erro ao gerar HTML: "+ e.getMessage());
         }
     }
 }

@@ -6,11 +6,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record Movie(
         @JsonAlias("Title")
-        String titulo,
+        String title,
         @JsonAlias("Poster")
         String urlImage,
         @JsonAlias("imdbRating")
-        String note,
+        String rating,
         @JsonAlias("Year")
-        String ano) {
+        String year) implements Content {
 }

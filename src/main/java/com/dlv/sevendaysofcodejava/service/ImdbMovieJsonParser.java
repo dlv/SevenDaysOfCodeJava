@@ -9,17 +9,17 @@ import java.util.List;
 
 public class ImdbMovieJsonParser implements JsonParser {
 
-    private final String json;
+    private String json;
 
     public ImdbMovieJsonParser(String json) {
         this.json = json;
     }
 
-    @Override
     public List<Movie> parse() {
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.readValue(json, new TypeReference<List<Movie>>() {});
+            var mapper = new ObjectMapper();
+            List<Movie> movies = mapper.readValue(json, new TypeReference<List<Movie>>() {});
+            return movies;
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

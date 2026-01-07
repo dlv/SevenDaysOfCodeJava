@@ -1,9 +1,11 @@
 package com.dlv.sevendaysofcodejava.service;
 
-import com.dlv.sevendaysofcodejava.model.Movie;
+import com.dlv.sevendaysofcodejava.model.Content;
 
 import java.util.List;
 
 public interface JsonParser {
-    List<Movie> parse();
+
+    List<? extends Content> parse();
+
 }
